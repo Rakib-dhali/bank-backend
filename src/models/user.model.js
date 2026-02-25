@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs")
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Email is required creating a user"],
@@ -38,3 +38,12 @@ userSchema.pre("save", async function(next){
     this.password = hash
     return next()
 })
+
+
+userSchema.methods.comparePassWord = function(password) {
+    return bcrypt.compare(password, this.password)
+}
+
+const userModel = new mongoose.model("user", userSchema)
+
+module.export
